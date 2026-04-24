@@ -115,6 +115,17 @@ Den avancerade modellen inkluderar en interaktionsterm (bmi \* smoker) för att 
 
 ```{r}
 #| echo: false
+#| tbl-cap: "Koefficienter från den enkla modellen"
+tidy(model_simple) %>% 
+  mutate(across(where(is.numeric), ~round(.x, 3))) %>% 
+  kable()
+```
+
+
+
+
+```{r}
+#| echo: false
 #| tbl-cap: "Koefficienter från den avancerade modellen"
 tidy(model_advanced) %>% 
   mutate(across(where(is.numeric), ~round(.x, 3))) %>% 
@@ -123,11 +134,14 @@ tidy(model_advanced) %>%
 
 ```{r}
 #| echo: false
-#| tbl-cap: "Modellsammanfattning"
-glance(model_advanced) %>% 
-  select(r.squared, adj.r.squared, sigma, statistic, p.value, df) %>% 
-  mutate(across(where(is.numeric), ~round(.x, 3))) %>% 
-  kable()
+#| tbl-cap: "Jämförelse av modellernas prestanda"
+bind_rows(
+  glance(model_simple) %>% mutate(Modell = "Enkel modell"),
+  glance(model_advanced) %>% mutate(Modell = "Avancerad modell")
+) %>%
+  select(Modell, r.squared, adj.r.squared, sigma, AIC, BIC) %>%
+  mutate(across(where(is.numeric), ~round(.x, 3))) %>%
+  kable(col.names = c("Modell", "R²", "Adj. R²", "Sigma", "AIC", "BIC"))
 ```
 
 # Tolkning
@@ -158,8 +172,7 @@ Analysen visar att rökning, BMI och ålder är de tydligaste kostnadsdrivarna, 
 
 # Begränsningar
 
-- Högerskev fördelning: charges är inte normalfördelad. En
-- log-transformation (log(charges)) skulle sannolikt förbättra modellen.
+- Högerskev fördelning: charges är inte normalfördelad. En log-transformation (log(charges)) skulle sannolikt förbättra modellen.
 - Linjäritetsantagande: Linjär regression kan missa icke-linjära samband.
 - Exkluderade observationer: Rader med saknade värden togs bort istället för att imputeras.
 - Okända variabler: Faktorer som yrke, genetik och lokala prisnivåer saknas i datasetet.

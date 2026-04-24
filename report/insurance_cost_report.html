@@ -2560,6 +2560,52 @@ vertical-align: -.125em;
 </section>
 <section id="resultat" class="level1" data-number="9">
 <h1 data-number="9"><span class="header-section-number">9</span> Resultat</h1>
+<div class="cell" data-tbl-cap="Koefficienter från den enkla modellen">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Koefficienter från den enkla modellen</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">296.555</td>
+<td style="text-align: right;">655.928</td>
+<td style="text-align: right;">0.452</td>
+<td style="text-align: right;">0.651</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">age</td>
+<td style="text-align: right;">87.014</td>
+<td style="text-align: right;">7.767</td>
+<td style="text-align: right;">11.203</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">bmi</td>
+<td style="text-align: right;">166.830</td>
+<td style="text-align: right;">20.887</td>
+<td style="text-align: right;">7.987</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">smokeryes</td>
+<td style="text-align: right;">8083.136</td>
+<td style="text-align: right;">246.205</td>
+<td style="text-align: right;">32.831</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <div class="cell" data-tbl-cap="Koefficienter från den avancerade modellen">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -2634,28 +2680,36 @@ vertical-align: -.125em;
 </table>
 </div>
 </div>
-<div class="cell" data-tbl-cap="Modellsammanfattning">
+<div class="cell" data-tbl-cap="Jämförelse av modellernas prestanda">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<caption>Modellsammanfattning</caption>
+<caption>Jämförelse av modellernas prestanda</caption>
 <thead>
 <tr class="header">
-<th style="text-align: right;">r.squared</th>
-<th style="text-align: right;">adj.r.squared</th>
-<th style="text-align: right;">sigma</th>
-<th style="text-align: right;">statistic</th>
-<th style="text-align: right;">p.value</th>
-<th style="text-align: right;">df</th>
+<th style="text-align: left;">Modell</th>
+<th style="text-align: right;">R²</th>
+<th style="text-align: right;">Adj. R²</th>
+<th style="text-align: right;">Sigma</th>
+<th style="text-align: right;">AIC</th>
+<th style="text-align: right;">BIC</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">Enkel modell</td>
+<td style="text-align: right;">0.554</td>
+<td style="text-align: right;">0.553</td>
+<td style="text-align: right;">3080.774</td>
+<td style="text-align: right;">19495.76</td>
+<td style="text-align: right;">19520.45</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Avancerad modell</td>
 <td style="text-align: right;">0.715</td>
 <td style="text-align: right;">0.713</td>
 <td style="text-align: right;">2468.766</td>
-<td style="text-align: right;">366.063</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">7</td>
+<td style="text-align: right;">19043.08</td>
+<td style="text-align: right;">19087.52</td>
 </tr>
 </tbody>
 </table>
@@ -2689,8 +2743,7 @@ vertical-align: -.125em;
 <section id="begränsningar" class="level1" data-number="12">
 <h1 data-number="12"><span class="header-section-number">12</span> Begränsningar</h1>
 <ul>
-<li>Högerskev fördelning: charges är inte normalfördelad. En</li>
-<li>log-transformation (log(charges)) skulle sannolikt förbättra modellen.</li>
+<li>Högerskev fördelning: charges är inte normalfördelad. En log-transformation (log(charges)) skulle sannolikt förbättra modellen.</li>
 <li>Linjäritetsantagande: Linjär regression kan missa icke-linjära samband.</li>
 <li>Exkluderade observationer: Rader med saknade värden togs bort istället för att imputeras.</li>
 <li>Okända variabler: Faktorer som yrke, genetik och lokala prisnivåer saknas i datasetet.</li>
@@ -3315,83 +3368,96 @@ vertical-align: -.125em;
 <span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: &quot;Koefficienter från den avancerade modellen&quot;</span></span>
-<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(model_advanced) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: &quot;Koefficienter från den enkla modellen&quot;</span></span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(model_simple) <span class="sc">%&gt;%</span> </span>
 <span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">round</span>(.x, <span class="dv">3</span>))) <span class="sc">%&gt;%</span> </span>
 <span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span>
 <span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: &quot;Modellsammanfattning&quot;</span></span>
-<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(model_advanced) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(r.squared, adj.r.squared, sigma, statistic, p.value, df) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">round</span>(.x, <span class="dv">3</span>))) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span>
-<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a><span class="fu"># Tolkning</span></span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: &quot;Koefficienter från den avancerade modellen&quot;</span></span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(model_advanced) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">round</span>(.x, <span class="dv">3</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>Modellen uppnår en förklaringsgrad (Adjusted R²) på **`r round(summary(model_advanced)$adj.r.squared * 100, 1)`%**, vilket är en markant förbättring jämfört med den enklare modellen (Adj. R² = **`r round(summary(model_simple)$adj.r.squared * 100, 1)`%**).</span>
-<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a><span class="fu">## Viktigaste fynden:</span></span>
-<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Ålder:** Varje levnadsår ökar kostnaden med ca 74 kr, allt annat lika (p <span class="sc">\&lt;</span> 0.001).</span>
-<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**BMI och rökning (interaktion):** Effekten av BMI beror starkt på om kunden röker. För icke-rökare ökar kostnaden med ca 123 kr per BMI-enhet, medan för rökare är ökningen ca **320 kr per BMI-enhet** (123 + 197). Detta innebär att en rökare med BMI 35 betalar avsevärt mer än en icke-rökare med samma BMI.</span>
-<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Huvudeffekten av rökning** (2 254 kr, p = 0.069) är inte signifikant i sig, men det beror på att effekten fångas upp av interaktionstermen. Tolkningen ska alltid göras tillsammans med <span class="in">`bmi:smokeryes`</span>.</span>
-<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Kronisk sjukdom** ökar kostnaden med ca **4 136 kr** per år (p <span class="sc">\&lt;</span> 0.001) – en av de starkaste enskilda effekterna.</span>
-<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Träningsnivå:** Jämfört med hög träningsnivå (referenskategori) betalar kunder med låg träningsnivå ca 1 543 kr mer och medium ca 581 kr mer. Effekten är signifikant men mindre än rökning och kroniska sjukdomar.</span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: &quot;Jämförelse av modellernas prestanda&quot;</span></span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(</span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glance</span>(model_simple) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Modell =</span> <span class="st">&quot;Enkel modell&quot;</span>),</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glance</span>(model_advanced) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Modell =</span> <span class="st">&quot;Avancerad modell&quot;</span>)</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Modell, r.squared, adj.r.squared, sigma, AIC, BIC) <span class="sc">%&gt;%</span></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">round</span>(.x, <span class="dv">3</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;Modell&quot;</span>, <span class="st">&quot;R²&quot;</span>, <span class="st">&quot;Adj. R²&quot;</span>, <span class="st">&quot;Sigma&quot;</span>, <span class="st">&quot;AIC&quot;</span>, <span class="st">&quot;BIC&quot;</span>))</span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Modellens F-statistika** (366, p ≈ 0) visar att modellen som helhet förklarar variationen i kostnader signifikant bättre än en nollmodell.</span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a><span class="fu"># Tolkning</span></span>
 <span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a><span class="fu"># Slutsatser</span></span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>Modellen uppnår en förklaringsgrad (Adjusted R²) på **`r round(summary(model_advanced)$adj.r.squared * 100, 1)`%**, vilket är en markant förbättring jämfört med den enklare modellen (Adj. R² = **`r round(summary(model_simple)$adj.r.squared * 100, 1)`%**).</span>
 <span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>Analysen visar att rökning, BMI och ålder är de tydligaste kostnadsdrivarna, och att kombinationen rökning + fetma ger en oproportionerligt hög riskprofil. För försäkringsbolaget innebär detta att en riskbaserad prissättning bör:</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a><span class="fu">## Viktigaste fynden:</span></span>
 <span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Väga rökstatus tungt</span>
-<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Beakta BMI särskilt för rökare (interaktionseffekt)</span>
-<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Inkludera ålder och kroniska sjukdomar som justeringsvariabler</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Ålder:** Varje levnadsår ökar kostnaden med ca 74 kr, allt annat lika (p <span class="sc">\&lt;</span> 0.001).</span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**BMI och rökning (interaktion):** Effekten av BMI beror starkt på om kunden röker. För icke-rökare ökar kostnaden med ca 123 kr per BMI-enhet, medan för rökare är ökningen ca **320 kr per BMI-enhet** (123 + 197). Detta innebär att en rökare med BMI 35 betalar avsevärt mer än en icke-rökare med samma BMI.</span>
 <span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a><span class="fu"># Begränsningar</span></span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Huvudeffekten av rökning** (2 254 kr, p = 0.069) är inte signifikant i sig, men det beror på att effekten fångas upp av interaktionstermen. Tolkningen ska alltid göras tillsammans med <span class="in">`bmi:smokeryes`</span>.</span>
 <span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Högerskev fördelning: charges är inte normalfördelad. En</span>
-<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>log-transformation (log(charges)) skulle sannolikt förbättra modellen.</span>
-<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Linjäritetsantagande: Linjär regression kan missa icke-linjära samband.</span>
-<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Exkluderade observationer: Rader med saknade värden togs bort istället för att imputeras.</span>
-<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Okända variabler: Faktorer som yrke, genetik och lokala prisnivåer saknas i datasetet.</span>
-<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Kausalitet: Modellen visar samband, inte orsakssamband.</span>
-<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a><span class="fu"># Förbättringar</span></span>
-<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Testa log(charges) som målvariabel</span>
-<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Pröva icke-linjära modeller (t.ex. random forest, GAM)</span>
-<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Validera modellen på ett separat test-set (t.ex. 80/20-split)</span>
-<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Undersöka influential observations och residualer mer noggrant</span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Kronisk sjukdom** ökar kostnaden med ca **4 136 kr** per år (p <span class="sc">\&lt;</span> 0.001) – en av de starkaste enskilda effekterna.</span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Träningsnivå:** Jämfört med hög träningsnivå (referenskategori) betalar kunder med låg träningsnivå ca 1 543 kr mer och medium ca 581 kr mer. Effekten är signifikant men mindre än rökning och kroniska sjukdomar.</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Modellens F-statistika** (366, p ≈ 0) visar att modellen som helhet förklarar variationen i kostnader signifikant bättre än en nollmodell.</span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a><span class="fu"># Slutsatser</span></span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>Analysen visar att rökning, BMI och ålder är de tydligaste kostnadsdrivarna, och att kombinationen rökning + fetma ger en oproportionerligt hög riskprofil. För försäkringsbolaget innebär detta att en riskbaserad prissättning bör:</span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Väga rökstatus tungt</span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Beakta BMI särskilt för rökare (interaktionseffekt)</span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Inkludera ålder och kroniska sjukdomar som justeringsvariabler</span>
 <span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a><span class="fu"># Självreflektion</span></span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a><span class="fu"># Begränsningar</span></span>
 <span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vad gjorde jag bra?</span></span>
-<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>Jag strukturerade projektet i tydliga skript (load, prepare, analyze, visualize) och motiverade varje steg. Jag byggde två modeller – en enkel och en med interaktionsterm – och kunde tolka resultaten i kontext.</span>
-<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vad var svårast?</span></span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Högerskev fördelning: charges är inte normalfördelad. En log-transformation (log(charges)) skulle sannolikt förbättra modellen.</span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Linjäritetsantagande: Linjär regression kan missa icke-linjära samband.</span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Exkluderade observationer: Rader med saknade värden togs bort istället för att imputeras.</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Okända variabler: Faktorer som yrke, genetik och lokala prisnivåer saknas i datasetet.</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Kausalitet: Modellen visar samband, inte orsakssamband.</span>
 <span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>Att tolka interaktionstermen i regressionen och att välja vilken nivå av detalj som skulle med i rapporten utan att bli för teknisk.</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a><span class="fu"># Förbättringar</span></span>
 <span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a><span class="fu">## Betygsnivå:</span></span>
-<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>Jag bedömer att min inlämning motsvarar VG eftersom jag:</span>
-<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Genomfört alla steg i uppgiften</span>
-<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Skapat minst 4 figurer/tabeller med tolkning</span>
-<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Byggt två regressionsmodeller, inklusive en med interaktionsterm</span>
-<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Motiverat variabelval och skapat en ny variabel (bmi_group)</span>
-<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Diskuterat modellens styrkor, svagheter och förbättringar</span>
-<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Strukturerat koden modulärt över flera skript</span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Testa log(charges) som målvariabel</span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Pröva icke-linjära modeller (t.ex. random forest, GAM)</span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Validera modellen på ett separat test-set (t.ex. 80/20-split)</span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Undersöka influential observations och residualer mer noggrant</span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a><span class="fu"># Självreflektion</span></span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vad gjorde jag bra?</span></span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>Jag strukturerade projektet i tydliga skript (load, prepare, analyze, visualize) och motiverade varje steg. Jag byggde två modeller – en enkel och en med interaktionsterm – och kunde tolka resultaten i kontext.</span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vad var svårast?</span></span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>Att tolka interaktionstermen i regressionen och att välja vilken nivå av detalj som skulle med i rapporten utan att bli för teknisk.</span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a><span class="fu">## Betygsnivå:</span></span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>Jag bedömer att min inlämning motsvarar VG eftersom jag:</span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Genomfört alla steg i uppgiften</span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Skapat minst 4 figurer/tabeller med tolkning</span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Byggt två regressionsmodeller, inklusive en med interaktionsterm</span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Motiverat variabelval och skapat en ny variabel (bmi_group)</span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Diskuterat modellens styrkor, svagheter och förbättringar</span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Strukturerat koden modulärt över flera skript</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
