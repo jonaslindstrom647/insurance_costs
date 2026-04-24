@@ -1,15 +1,14 @@
----
-title: "ReadMe"
-output: html_document
----
-
 # Analys av försäkringskostnader
 
-Det här projektet analyserar vilka faktorer som driver försäkringskostnader och bygger en regressionsmodell som kan användas som beslutsstöd för prissättning.
+Det här projektet analyserar vilka faktorer som driver försäkrings-
+kostnader och bygger en regressionsmodell som kan användas som 
+beslutsstöd för prissättning.
 
 **Författare:** Jonas Lindström
 
 ## Projektstruktur
+
+​```
 insurance_costs/
 ├── data/
 │   └── insurance_costs.csv                    # Rådata
@@ -26,6 +25,7 @@ insurance_costs/
 ├── run_insurance_cost.R                       # Kör hela analysen
 ├── insurance_costs.Rproj                      # RStudio-projektfil
 └── README.md
+​```
 
 ## Så här kommer du igång
 
@@ -33,35 +33,36 @@ insurance_costs/
 Öppna `report/insurance_cost_report.html` i valfri webbläsare.
 
 ### Köra projektet i RStudio
+
 1. Öppna `insurance_costs.Rproj` i RStudio
 2. Installera paket (vid behov):
 
-```{r}
+​```r
 install.packages(c("tidyverse", "knitr", "broom"))
-```
+​```
 
-Kör hela analysen:
+3. Kör hela analysen:
 
-```{r}
+​```r
 source("run_insurance_cost.R")
-```
+​```
 
+### Rendera rapporten på nytt
 
-Rendera rapporten på nytt
+Öppna `report/insurance_cost_report.qmd` och klicka på **Render** i RStudio, 
+eller kör i terminalen:
 
-Öppna report/insurance_cost_report.qmd och klicka på Render i RStudio, eller kör i terminalen:
-
-```{r}
+​```bash
 quarto render report/insurance_cost_report.qmd
-```
+​```
 
-Paket som används
+## Paket som används
 
-- tidyverse för Datahantering och visualisering
-- knitr för Rapportgenerering och tabeller
-- broom för Formatering av modellresultat
+- **tidyverse** – datahantering och visualisering
+- **knitr** – rapportgenerering och tabeller
+- **broom** – formatering av modellresultat
 
-Output
+## Output
 
-report/insurance_cost_report.html – den färdiga rapporten
-output/figures/ – exporterade figurer som PNG
+- `report/insurance_cost_report.html` – den färdiga rapporten
+- `output/figures/` – exporterade figurer som PNG
