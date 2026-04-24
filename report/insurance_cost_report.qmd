@@ -48,7 +48,7 @@ Analysen bygger på datasetet insurance_costs.csv. Arbetet har genomförts i R (
 
 Datasetet består av `r nrow(insurance_cost)` observationer och `r ncol(insurance_cost)` variabler, varav både numeriska (t.ex. ålder, BMI) och kategoriska (t.ex. rökning, region).
 
-Under städningen identifierades saknade värden i variablerna bmi, exercise_level och annual_checkups. Dessa rader exkluderades då de utgjorde en liten andel av datasetet. Efter städning återstod r nrow(insurance) observationer.
+Under städningen identifierades saknade värden i variablerna bmi, exercise_level och annual_checkups. Dessa rader exkluderades då de utgjorde en liten andel av datasetet. Efter städning återstod `r nrow(insurance)` observationer.
 
 Kategoriska variabler trimmades och konverterades till gemener för att hantera stavningsinkonsekvenser, och därefter kodades som faktorer.
 
@@ -58,7 +58,7 @@ För att tydliggöra riskgrupper skapades variabeln bmi_group med gränsvärdet 
 
 # Beskrivande analys
 
-Fördelning av kostnader och rökningens effekt
+### Fördelning av kostnader och rökningens effekt
 
 ```{r}
 #| echo: false
@@ -72,7 +72,7 @@ p_smoker_nonsmoker_costs
 
 Histogrammet visar att försäkringskostnaderna är kraftigt högerskeva –majoriteten av kunderna har låga kostnader medan ett fåtal drar upp genomsnittet. Detta är viktigt att ha i åtanke vid regressionsanalysen, eftersom linjär regression fungerar bäst på normalfördelade data. Boxplotten visar en tydlig skillnad mellan rökare och icke-rökare: rökare har en betydligt högre mediankostnad samt större spridning.
 
-# Ålder och kostnad
+### Ålder och kostnad
 
 ```{r}
 #| echo: false
@@ -82,7 +82,7 @@ p_smoker_nonsmoker_age_costs
 
 Kostnaden ökar linjärt med åldern för båda grupperna, men rökare ligger konsekvent på en högre kostnadsnivå. Detta tyder på att både ålder och rökning är oberoende kostnadsdrivare.
 
-# Interaktion mellan BMI och rökning
+### Interaktion mellan BMI och rökning
 
 ```{r}
 #| echo: false
@@ -162,13 +162,18 @@ Modellen uppnår en förklaringsgrad (Adjusted R²) på **`r round(summary(model
 
 - **Modellens F-statistika** (366, p ≈ 0) visar att modellen som helhet förklarar variationen i kostnader signifikant bättre än en nollmodell.
 
+- **En ackumulerad riskprofil** En kritisk observation i analysen är att livsstilsfaktorerna samverkar på ett sätt som skapar extrema riskprofiler. En kund som är rökare, har ett BMI över 30 och en låg träningsnivå drabbas av tre separata kostnadsökningar som staplas på varandra. Medan träning (exercise_levellow) i sig ökar kostnaden med ca 1 543 kr, blir den totala ekonomiska belastningen för bolaget störst när denna faktor kombineras med den branta BMI-stegringen hos rökare. Detta tyder på att förebyggande hälsoinsatser (rökavvänjning och träningsprogram) skulle kunna ge en synergistisk besparing för bolaget.
+
+- **Kronisk sjukdom** Att ha en kronisk sjukdom är den enskilt kraftigaste faktorn för kostnadsökning i modellen, med ett tillägg på ca 4 136 kr per år (p < 0.001). Detta visar att medicinsk historik är en fundamental parameter för försäkringsbolagets riskbedömning.
+
 # Slutsatser
 
-Analysen visar att rökning, BMI och ålder är de tydligaste kostnadsdrivarna, och att kombinationen rökning + fetma ger en oproportionerligt hög riskprofil. För försäkringsbolaget innebär detta att en riskbaserad prissättning bör:
+Analysen visar att rökning, BMI och ålder är de tydligaste kostnadsdrivarna, och att kombinationen rökning + fetma + låg eller ingen träning ger en oproportionerligt hög riskprofil. För försäkringsbolaget innebär detta att en riskbaserad prissättning bör:
 
 - Väga rökstatus tungt
 - Beakta BMI särskilt för rökare (interaktionseffekt)
 - Inkludera ålder och kroniska sjukdomar som justeringsvariabler
+- Överväga incitament för livsstilsfaktorer, t.ex. rabatter för dokumenterad fysisk aktivitet
 
 # Begränsningar
 
@@ -177,6 +182,7 @@ Analysen visar att rökning, BMI och ålder är de tydligaste kostnadsdrivarna, 
 - Exkluderade observationer: Rader med saknade värden togs bort istället för att imputeras.
 - Okända variabler: Faktorer som yrke, genetik och lokala prisnivåer saknas i datasetet.
 - Kausalitet: Modellen visar samband, inte orsakssamband.
+- Kronisk sjuk: Variabeln chronic_condition är binär (ja/nej), vilket är en kraftig förenkling av verkligheten. Som person med erfarenhet av kronisk sjukdom (MS) vet jag att vårdbehov och kostnader varierar enormt mellan olika diagnoser. Modellen missar nyanserna i hur olika sjukdomar påverkar individens ekonomi och livskvalitet.
 
 # Förbättringar
 
@@ -186,6 +192,10 @@ Analysen visar att rökning, BMI och ålder är de tydligaste kostnadsdrivarna, 
 - Undersöka influential observations och residualer mer noggrant
 
 # Självreflektion
+
+## Etisk reflektion
+
+Ur ett etiskt perspektiv är det problematiskt att beskatta kroniskt sjuka med högre premier. Till skillnad från rökning och träning är en kronisk sjukdom sällan ett självvalt livsstilsval. I ett system som det amerikanska (vilket datat liknar) riskerar sjuka individer att hamna i en ekonomisk utförsbacke, medan vi i Sverige har ett högkostnadsskydd som jämnar ut dessa skillnader. Detta är en viktig distinktion om modellen skulle implementeras i en svensk kontext.
 
 ## Vad gjorde jag bra?
 
