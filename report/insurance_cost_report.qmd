@@ -46,7 +46,7 @@ Analysen bygger på datasetet insurance_costs.csv. Arbetet har genomförts i R (
 
 # Dataförståelse och städning
 
-Datasetet består av r nrow(insurance_cost) observationer och r ncol(insurance_cost) variabler, varav både numeriska (t.ex. ålder, BMI) och kategoriska (t.ex. rökning, region).
+Datasetet består av `r nrow(insurance_cost)` observationer och `r ncol(insurance_cost)` variabler, varav både numeriska (t.ex. ålder, BMI) och kategoriska (t.ex. rökning, region).
 
 Under städningen identifierades saknade värden i variablerna bmi, exercise_level och annual_checkups. Dessa rader exkluderades då de utgjorde en liten andel av datasetet. Efter städning återstod r nrow(insurance) observationer.
 
