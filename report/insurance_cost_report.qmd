@@ -1,0 +1,194 @@
+---
+title: "Analys av försäkringskostnader"
+subtitle: "Vilka faktorer driver kostnaderna?"
+author: "Jonas Lindström"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: "Innehåll"
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    theme:
+      dark: darkly
+      light: flatly
+    fig-align: center
+    embed-resources: true
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(knitr)
+library(broom)
+
+# Kör alla analyssteg
+insurance_cost <- read_csv("../data/insurance_costs.csv")
+source("../scripts/02_prepare_data.R")
+source("../scripts/03_analysis.R")
+source("../scripts/04_figures.R")
+```
+
+# Introduktion
+
+Syftet med denna rapport är att identifiera de främsta kostnadsdrivarna för försäkringsbolagets kunder samt undersöka om en regressionsmodell kan användas som beslutsstöd vid framtida prissättning. Genom att analysera historiska kunddata kan vi skapa en mer rättvis och riskbaserad prissättning.
+
+# Metod
+
+Analysen bygger på datasetet insurance_costs.csv. Arbetet har genomförts i R (tidyverse) och strukturerats i separata skript för inläsning, städning, analys och visualisering. Minst en linjär regressionsmodell har byggts med charges som målvariabel.
+
+# Dataförståelse och städning
+
+Datasetet består av r nrow(insurance_cost) observationer och r ncol(insurance_cost) variabler, varav både numeriska (t.ex. ålder, BMI) och kategoriska (t.ex. rökning, region).
+
+Under städningen identifierades saknade värden i variablerna bmi, exercise_level och annual_checkups. Dessa rader exkluderades då de utgjorde en liten andel av datasetet. Efter städning återstod r nrow(insurance) observationer.
+
+Kategoriska variabler trimmades och konverterades till gemener för att hantera stavningsinkonsekvenser, och därefter kodades som faktorer.
+
+# Ny variabel: BMI-grupp
+
+För att tydliggöra riskgrupper skapades variabeln bmi_group med gränsvärdet 30 (WHO:s definition av fetma). Detta gör det möjligt att visualisera och diskutera hur fetma samverkar med andra riskfaktorer, särskilt rökning.
+
+# Beskrivande analys
+
+Fördelning av kostnader och rökningens effekt
+
+```{r}
+#| echo: false
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "Fördelning av försäkringskostnader"
+#|   - "Kostnad för rökare vs icke-rökare"
+p_insurance_costs
+p_smoker_nonsmoker_costs
+```
+
+Histogrammet visar att försäkringskostnaderna är kraftigt högerskeva –majoriteten av kunderna har låga kostnader medan ett fåtal drar upp genomsnittet. Detta är viktigt att ha i åtanke vid regressionsanalysen, eftersom linjär regression fungerar bäst på normalfördelade data. Boxplotten visar en tydlig skillnad mellan rökare och icke-rökare: rökare har en betydligt högre mediankostnad samt större spridning.
+
+# Ålder och kostnad
+
+```{r}
+#| echo: false
+#| fig-cap: "Samband mellan ålder och kostnad, uppdelat på rökare/icke-rökare"
+p_smoker_nonsmoker_age_costs
+```
+
+Kostnaden ökar linjärt med åldern för båda grupperna, men rökare ligger konsekvent på en högre kostnadsnivå. Detta tyder på att både ålder och rökning är oberoende kostnadsdrivare.
+
+# Interaktion mellan BMI och rökning
+
+```{r}
+#| echo: false
+#| fig-cap: "Interaktionseffekt: BMI och rökning"
+p_smoker_bmi_costs
+```
+
+Figuren visar en stark interaktionseffekt: för icke-rökare (grön) har BMI liten påverkan på kostnaden, medan för rökare (röd) stiger kostnaden kraftigt med ökat BMI. Kombinationen rökning + högt BMI ger alltså oproportionerligt höga kostnader.
+
+```{r}
+#| echo: false
+#| tbl-cap: "Sammanfattning: Rökning och BMI-status"
+kable(bmi_summary, digits = 0, 
+      col.names = c("Rökare", "BMI-grupp", "Antal", 
+                    "Medelkostnad", "Mediankostnad"))
+```
+
+Tabellen bekräftar mönstret: rökare med fetma har en medelkostnad på ca 19 600 kr, jämfört med icke-rökare utan fetma som ligger på ca 8 100 kr – en skillnad på över 140 %.
+
+# Regressionsanalys
+
+För att kvantifiera sambanden byggdes två modeller:
+
+- Enkel modell: charges \~ age + bmi + smoker
+- Avancerad modell: charges \~ age + bmi \* smoker + exercise_level + chronic_condition
+
+Den avancerade modellen inkluderar en interaktionsterm (bmi \* smoker) för att fånga upp det tydliga mönster vi såg i figur 3, samt kontrollerar för livsstils- och hälsofaktorer.
+
+# Resultat
+
+```{r}
+#| echo: false
+#| tbl-cap: "Koefficienter från den avancerade modellen"
+tidy(model_advanced) %>% 
+  mutate(across(where(is.numeric), ~round(.x, 3))) %>% 
+  kable()
+```
+
+```{r}
+#| echo: false
+#| tbl-cap: "Modellsammanfattning"
+glance(model_advanced) %>% 
+  select(r.squared, adj.r.squared, sigma, statistic, p.value, df) %>% 
+  mutate(across(where(is.numeric), ~round(.x, 3))) %>% 
+  kable()
+```
+
+# Tolkning
+
+Modellen uppnår en förklaringsgrad (Adjusted R²) på **`r round(summary(model_advanced)$adj.r.squared * 100, 1)`%**, vilket är en markant förbättring jämfört med den enklare modellen (Adj. R² = **`r round(summary(model_simple)$adj.r.squared * 100, 1)`%**).
+
+## Viktigaste fynden:
+
+- **Ålder:** Varje levnadsår ökar kostnaden med ca 74 kr, allt annat lika (p \< 0.001).
+
+- **BMI och rökning (interaktion):** Effekten av BMI beror starkt på om kunden röker. För icke-rökare ökar kostnaden med ca 123 kr per BMI-enhet, medan för rökare är ökningen ca **320 kr per BMI-enhet** (123 + 197). Detta innebär att en rökare med BMI 35 betalar avsevärt mer än en icke-rökare med samma BMI.
+
+- **Huvudeffekten av rökning** (2 254 kr, p = 0.069) är inte signifikant i sig, men det beror på att effekten fångas upp av interaktionstermen. Tolkningen ska alltid göras tillsammans med `bmi:smokeryes`.
+
+- **Kronisk sjukdom** ökar kostnaden med ca **4 136 kr** per år (p \< 0.001) – en av de starkaste enskilda effekterna.
+
+- **Träningsnivå:** Jämfört med hög träningsnivå (referenskategori) betalar kunder med låg träningsnivå ca 1 543 kr mer och medium ca 581 kr mer. Effekten är signifikant men mindre än rökning och kroniska sjukdomar.
+
+- **Modellens F-statistika** (366, p ≈ 0) visar att modellen som helhet förklarar variationen i kostnader signifikant bättre än en nollmodell.
+
+# Slutsatser
+
+Analysen visar att rökning, BMI och ålder är de tydligaste kostnadsdrivarna, och att kombinationen rökning + fetma ger en oproportionerligt hög riskprofil. För försäkringsbolaget innebär detta att en riskbaserad prissättning bör:
+
+- Väga rökstatus tungt
+- Beakta BMI särskilt för rökare (interaktionseffekt)
+- Inkludera ålder och kroniska sjukdomar som justeringsvariabler
+
+# Begränsningar
+
+- Högerskev fördelning: charges är inte normalfördelad. En
+- log-transformation (log(charges)) skulle sannolikt förbättra modellen.
+- Linjäritetsantagande: Linjär regression kan missa icke-linjära samband.
+- Exkluderade observationer: Rader med saknade värden togs bort istället för att imputeras.
+- Okända variabler: Faktorer som yrke, genetik och lokala prisnivåer saknas i datasetet.
+- Kausalitet: Modellen visar samband, inte orsakssamband.
+
+# Förbättringar
+
+- Testa log(charges) som målvariabel
+- Pröva icke-linjära modeller (t.ex. random forest, GAM)
+- Validera modellen på ett separat test-set (t.ex. 80/20-split)
+- Undersöka influential observations och residualer mer noggrant
+
+# Självreflektion
+
+## Vad gjorde jag bra?
+
+Jag strukturerade projektet i tydliga skript (load, prepare, analyze, visualize) och motiverade varje steg. Jag byggde två modeller – en enkel och en med interaktionsterm – och kunde tolka resultaten i kontext.
+
+## Vad var svårast?
+
+Att tolka interaktionstermen i regressionen och att välja vilken nivå av detalj som skulle med i rapporten utan att bli för teknisk.
+
+## Betygsnivå:
+
+Jag bedömer att min inlämning motsvarar VG eftersom jag:
+
+- Genomfört alla steg i uppgiften
+- Skapat minst 4 figurer/tabeller med tolkning
+- Byggt två regressionsmodeller, inklusive en med interaktionsterm
+- Motiverat variabelval och skapat en ny variabel (bmi_group)
+- Diskuterat modellens styrkor, svagheter och förbättringar
+- Strukturerat koden modulärt över flera skript
