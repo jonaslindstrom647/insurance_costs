@@ -109,7 +109,7 @@ För att kvantifiera sambanden byggdes två modeller:
 - Enkel modell: charges \~ age + bmi + smoker
 - Avancerad modell: charges \~ age + bmi \* smoker + exercise_level + chronic_condition
 
-Den avancerade modellen inkluderar en interaktionsterm (bmi \* smoker) för att fånga upp det tydliga mönster vi såg i figur 3, samt kontrollerar för livsstils- och hälsofaktorer.
+Den avancerade modellen inkluderar en interaktionsterm (bmi \* smoker) för att fånga upp det tydliga mönster vi såg i figur 4, samt kontrollerar för livsstils- och hälsofaktorer.
 
 # Resultat
 
