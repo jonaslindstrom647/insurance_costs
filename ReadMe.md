@@ -8,7 +8,6 @@ beslutsstöd för prissättning.
 
 ## Projektstruktur
 
-​```
 insurance_costs/
 ├── data/
 │   └── insurance_costs.csv                    # Rådata
@@ -25,7 +24,7 @@ insurance_costs/
 ├── run_insurance_cost.R                       # Kör hela analysen
 ├── insurance_costs.Rproj                      # RStudio-projektfil
 └── README.md
-​```
+
 
 ## Så här kommer du igång
 
