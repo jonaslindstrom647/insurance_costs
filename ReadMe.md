@@ -8,39 +8,16 @@ beslutsstöd för prissättning.
 
 ## Projektstruktur
 
-insurance_costs/
-├── data/
-│   └── insurance_costs.csv          # Rådata
-├── scripts/
-│   ├── 01_load_data.R               # Läser in data
-│   ├── 02_prepare_data.R            # Städar och förbereder data
-│   ├── 03_analysis.R                # Regressionsanalys
-│   └── 04_figures.R                 # Skapar figurer
-├── report/
-│   ├── insurance_cost_report.qmd    # Källkod för rapporten
-│   └── insurance_cost_report.html   # Färdig rapport (öppna denna!)
-├── output/
-│   └── figures/                     # Sparade figurer (.png)
-├── run_insurance_cost.R             # Kör hela analysen
-├── insurance_costs.Rproj            # RStudio-projektfil
-└── README.md
-
-insurance_costs/
-├── data/
-│   └── insurance_costs.csv                    # Rådata
-├── scripts/
-│   ├── 01_load_data.R                         # Läser in data
-│   ├── 02_prepare_data.R                      # Städar och förbereder data
-│   ├── 03_analysis.R                          # Regressionsanalys
-│   └── 04_figures.R                           # Skapar figurer
-├── report/
-│   ├── insurance_cost_report.qmd              # Källkod för rapporten
-│   └── insurance_cost_report.html             # Färdig rapport (öppna denna!)
-├── output/
-│   └── figures/                               # Sparade figurer (.png)
-├── run_insurance_cost.R                       # Kör hela analysen
-├── insurance_costs.Rproj                      # RStudio-projektfil
-└── README.md
+- `data/insurance_costs.csv` – rådata
+- `scripts/01_load_data.R` – läser in data
+- `scripts/02_prepare_data.R` – städar och förbereder data
+- `scripts/03_analysis.R` – regressionsanalys
+- `scripts/04_figures.R` – skapar figurer
+- `report/insurance_cost_report.qmd` – källkod för rapporten
+- `report/insurance_cost_report.html` – färdig rapport (öppna denna!)
+- `output/figures/` – sparade figurer (PNG)
+- `run_insurance_cost.R` – kör hela analysen
+- `insurance_costs.Rproj` – RStudio-projektfil
 
 
 ## Så här kommer du igång
